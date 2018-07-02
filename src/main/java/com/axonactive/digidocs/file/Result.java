@@ -1,0 +1,5 @@
+package com.axonactive.digidocs.file;
+
+public enum Result {
+	FILE_NOT_EXIST, FAIL_RENAMING, FAIL_MOVING, FAIL_RETRIEVE_FILE, FAIL_DATABASE_SAVING, STEP_SUCESS, SUCCESS
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html">
+<h:head>
+	<title><ui:insert name="title">Login</ui:insert></title>
+	<h:outputStylesheet library="css" name="resetCss.css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<h:outputStylesheet name="webjars/font-awesome/5.5.2/css/font-awesome.css" />
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}" />
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+		
+	<!-- Place Define Css -->	
+	<ui:insert name="inputCssLink"></ui:insert>
+	<h:outputStylesheet library="css" name="index.css" />
+</h:head>
+<h:body>
+	<div id="page">
+		<!--Header  -->
+		<div id="header">
+			<ui:insert name="header">
+				<ui:include src="./headerLayout.xhtml"></ui:include>
+			</ui:insert>
+		</div>
+		<!-- Content -->
+		<div id="content">
+			<ui:insert name="content">
+				<ui:include src="./contentLayout.xhtml"></ui:include>
+			</ui:insert>
+		</div>
+		<!--Footer  -->
+		<div id="footer">
+			<ui:insert name="footer">
+				<ui:include src="./footerLayout.xhtml"></ui:include>
+			</ui:insert>
+		</div>
+	</div>
+
+	<ui:insert name="inputJsLink"></ui:insert>
+</h:body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "realm": "KeycloakSSO",
+  "auth-server-url": "http://192.168.70.51:8180/auth",
+  "ssl-required": "external",
+  "resource": "DigiDocs",
+  "public-client": true,
+  "confidential-port": 0,
+  "use-resource-role-mappings":true
+  
+}

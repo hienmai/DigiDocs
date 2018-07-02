@@ -1,0 +1,104 @@
+#tableContent {
+	font-family: "Roboto", sans-serif;
+	font-size: 16px;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+}
+
+.ui-widget {
+	font-family: "Roboto", sans-serif;	
+}
+
+table {
+	border-spacing: 15px 0;
+}
+
+tr {
+	height: 50px;
+}
+
+.button {
+	color: #FFF;
+	background: #0096d6;
+	font-size: 16px;
+	font-weight: normal;
+	border: none;
+	box-shadow: none;
+	float: right;
+	margin: 5px;
+}
+
+#content table {
+	border-collapse: separate;
+}
+
+#content .custom-input {
+	width: auto;
+	height: auto;
+	border: 1px solid;
+	box-shadow: none;
+	border-radius: 6px;
+	padding: 4px 3px;
+	background: white;
+}
+
+.ui-button {
+	font-weight: normal;
+}
+
+.table1 {
+	display: inline-block;
+}
+
+tr {
+	height: 70px;
+}
+
+.ui-outputlabel {
+	color: black;
+}
+
+.label {
+	width: 121px;
+}
+
+.ui-growl {
+	position: fixed; /* or absolute */
+}
+
+@media only screen and (max-width: 1013px) {
+	.table1 {
+		width: 390px !important;
+		display: block !important;
+	}
+	#hidden {
+		display: none !important;
+	}
+}
+
+@media only screen and (max-width: 414px) {
+	.table1 {
+		width: auto !important;
+		display: block !important;
+	}
+	#hidden {
+		display: none !important;
+	}
+	.label {
+		width: 66px !important;
+	}
+	body {
+		align: center !important;
+	}
+	#content .custom-input {
+		width: 95%;
+	}
+	.button {
+		width: 100% !important;
+		display: inline-block !important;
+	}
+	tr {
+		height: 10px !important;
+	}
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="inputCssLink">
+		<h:outputStylesheet library="css" name="materialize.min.css" />
+	</ui:define>
+	<ui:define name="header">
+		<h:link outcome="index" id="product-name">DigiDocs</h:link>
+		<div id="menu-bar"></div>
+	</ui:define>
+	<ui:define name="content">
+		<div class="errorDetails">
+			<center>
+				<h1 class="titlt-500"></h1>
+				<div class="imgError"></div>
+				<p style="font-size: 30px; font-weight: bold">
+					<h:outputText value="#{errorHandler.showCodeMessage()}" />
+				</p>
+				<h:outputLink value="#{userController.handleLogout(request)}" rendered="#{errorHandler.getStatusCode() eq 403}" />
+			</center>
+		</div>
+	</ui:define>
+	<ui:define name="inputJsLink">
+		<h:outputScript library="js" name="jquery-3.2.1.min.js" />
+		<h:outputScript library="js" name="materialize.min.js" />
+		<h:outputScript library="js" name="scripts.js" />
+	</ui:define>
+</ui:composition>
+</html>

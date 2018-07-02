@@ -1,0 +1,292 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<f:metadata>
+	<f:attribute name="idFile" id="idFile" value="#{param.id}" />
+	<f:event listener="#{webHandler.showFileById}" type="preRenderView"></f:event>
+</f:metadata>
+
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="inputCssLink">
+		<h:outputStylesheet library="css" name="materialize.min.css" />
+		<h:outputStylesheet library="css"
+			name="jquery.mCustomScrollbar.min.css" />
+		<h:outputStylesheet library="css" name="index.css" />
+	</ui:define>
+	<ui:define name="title">DigiDocs</ui:define>
+	<ui:define name="header">
+		<a href="" id="product-name">DigiDocs</a>
+		<div id="menu-bar">
+			<ul>
+				<li class="has-sub"><a href="#">#{user.getFullName()}</a>
+					<ul>
+						<li><h:form>
+								<p:commandLink value="Log out"
+									action="#{userController.handleLogout(request)}" ajax="false" />
+							</h:form></li>
+					</ul></li>
+			</ul>
+		</div>
+	</ui:define>
+	<ui:define name="content">
+	<div id='tooltip_tag'><span>This tag has already existed</span></div>
+		<div class="ui-g row">
+			<div class="col xl2 l3 filter">
+				<div class="input-field">
+					<i class="fa fa-filter icon-filter" /> <input placeholder="Filter"
+						type="text" class="input-filter validate" />
+				</div>
+			</div>
+
+			<div class="col xl10 l9 m12 s12" id="container_tag">
+				<h:panelGroup layout="block" id="jsf_container_tag">
+
+					<!-- id for select old file -->
+					<span id="currentIdDocument" style="display: none">#{webHandler.currentFileBOM.id}</span>
+
+					<span class="item icon-tag sidenav-trigger"
+						data-target="slide-out-tag"> <i class="fa fa-tag"
+						style="color: #777" />
+					</span>
+					<div class="item">
+						<h:panelGrid>
+							<p:chips id="chips" value="#{webHandler.listCurrentTags}" />
+
+						</h:panelGrid>
+					</div>
+					<h:form>
+						<p:remoteCommand name="createTag"
+							action="#{webHandler.attachTagToFile}" />
+					</h:form>
+					<h:form>
+						<p:remoteCommand name="deleteTag"
+							action="#{webHandler.detachTagFromFile}" />
+					</h:form>
+				</h:panelGroup>
+			</div>
+		</div>
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+			onsuccess="PF('statusDialog').hide()" />
+
+		<p:dialog widgetVar="statusDialog" draggable="false" closable="false"
+			resizable="false" showHeader="false">
+			<p:graphicImage name="/images/loader.gif" />
+		</p:dialog>
+		<p:outputPanel styleClass="my-container">
+
+			<div class="ui-g row">
+
+				<div id="sidebar-hide" class="sidenav-trigger"
+					data-target="slide-out">
+					<div class="icon-line-contain">
+						<span class="icon-line" /> <span class="icon-line" /> <span
+							class="icon-line" />
+					</div>
+				</div>
+
+				<!-- SIDEBAR -->
+				<div class="col xl2 l3 m3 s12 sidebar">
+					<!-- LIST FOLDER -->
+					<div class="list-folder" id="folders">
+						<ui:repeat var="year" value="#{webHandler.folderList}">
+							<div class="folder-year" data-id-year="#{year}">
+								<p:commandLink
+									styleClass="none-decoration folder-link year year_#{year}"
+									href="#">
+									<i class="fa fa-folder" />
+									<span>#{year}</span>
+								</p:commandLink>
+
+								<div class="cards">
+									<ui:repeat var="fileEntity"
+										value="#{webHandler.readFileInYearFolder(year, webHandler.getCurrentRole())}">
+										<div class="card #{fileEntity.isRead()} horizontal"
+											data-id-doc="#{fileEntity.getId()}">
+											<div class="card-stacked">
+												<div class="card-content">
+													<p:commandLink oncomplete="PF('editNameDialog').show();"
+														update="form_command" global="false"
+														action="#{webHandler.getFileEntityFromItem(fileEntity)}">
+														<i id="edit-file-name" class="fa fa-pencil-square-o" />
+													</p:commandLink>
+													<p:commandLink>
+														<p id="file-name" class="file-name">#{fileEntity.name}</p>
+														<p id="sent-from">From: #{fileEntity.branchSender}</p>
+														<p:ajax update="form:show_pdf :jsf_container_tag"
+															event="click"
+															listener="#{webHandler.readSpecificPdfFile(fileEntity.id)}"></p:ajax>
+													</p:commandLink>
+												</div>
+											</div>
+										</div>
+
+										<h:form>
+											<p:remoteCommand name="updateStateDocument"
+												action="#{webHandler.updateStateDocument}" />
+										</h:form>
+									</ui:repeat>
+								</div>
+							</div>
+						</ui:repeat>
+					</div>
+				</div>
+				<!--END SIDEBAR -->
+				<!-- CONTENT VIEW PDF FILE -->
+				<div class="col xl9 l9 m9 s12 view">
+					<h:form id="form">
+						<pe:documentViewer id="show_pdf" width="100%"
+							value="#{webHandler.getContent()}" zoom="page-width"
+							download="#{webHandler.currentFileBOM.name}">
+							<p:ajaxStatus oncomplete="load()" />
+						</pe:documentViewer>
+					</h:form>
+				</div>
+
+				<!-- START MENU-SIDEBAR HIDE -->
+				<aside>
+				<ul id="slide-out" class="sidenav">
+					<div class="sidebar-hide-layout">
+						<div class="top-inbox">
+							<span class="sidenav-close"><i class="fa fa-close" /> </span>
+							<h4 class="title-sidebar-hide">Inbox</h4>
+							<div class="row">
+								<div class="input-field col s12">
+									<i class="fa fa-filter icon-filter-2" /> <input
+										placeholder="Filter" type="text" class="input-filter" />
+								</div>
+							</div>
+						</div>
+
+						<div id="list-hide">
+							<ui:repeat var="year" value="#{webHandler.folderList}">
+								<div class="list-folder-hide" data-id-year="#{year}">
+									<p:link
+										styleClass="none-decoration folder-link year year_#{year}"
+										href="#">
+										<i class="fa fa-folder" />
+										<span>#{year}</span>
+									</p:link>
+
+									<div class="cards">
+										<ui:repeat var="fileEntity"
+											value="#{webHandler.readFileInYearFolder(year, webHandler.getCurrentRole())}">
+											<p:commandLink>
+												<div class="card #{fileEntity.isRead()} horizontal"
+													data-id-doc="#{fileEntity.getId()}"
+													id="#{fileEntity.getId()}">
+													<div class="card-stacked">
+														<div class="card-content">
+															<p:commandLink oncomplete="PF('editNameDialog').show();"
+																update="form_command" global="false"
+																action="#{webHandler.getFileEntityFromItem(fileEntity)}">
+																<i id="edit-file-name" class="fa fa-pencil-square-o" />
+															</p:commandLink>
+															<p:commandLink>
+																<p id="file-name" class="file-name">#{fileEntity.name}</p>
+																<p id="sent-from">From: #{fileEntity.branchSender}</p>
+																<p:ajax update="form:show_pdf :jsf_container_tag"
+																	event="click"
+																	listener="#{webHandler.readSpecificPdfFile(fileEntity.id)}"></p:ajax>
+															</p:commandLink>
+														</div>
+													</div>
+												</div>
+												<p:ajax update="form:show_pdf :jsf_container_tag"
+													event="click"
+													listener="#{webHandler.readSpecificPdfFile(fileEntity.id)}">
+												</p:ajax>
+											</p:commandLink>
+										</ui:repeat>
+									</div>
+								</div>
+							</ui:repeat>
+						</div>
+					</div>
+				</ul>
+				</aside>
+				<!-- END MENU-SIDEBAR HIDE -->
+				<!-- START TAG-SIDEBAR HIDE -->
+				<aside>
+				<ul id="slide-out-tag" class="sidenav">
+					<div class="sidebar-hide-layout" id="tag-list-wrapper">
+						<div class="top-inbox" id="top-tag">
+							<span class="sidenav-close"><i class="fa fa-close" /> </span>
+							<h4 class="title-sidebar-hide">Tag</h4>
+							<div class="row">
+								<div class="input-field col s12">
+									<i class="fa fa-filter icon-filter-2" /> <input
+										placeholder="Tag Filter" type="text" class="input-filter" />
+								</div>
+							</div>
+
+						</div>
+
+						<div id="list-hide-tag">
+							<ui:repeat var="entry"
+								value="#{webHandler.resultTagMap.entrySet().toArray()}">
+								<div class="tag-wrapper">
+									<div class="tag-letter">#{entry.key}</div>
+									<ui:repeat var="resultTag" value="#{entry.value}">
+										<div class="chip">
+											#{resultTag.name} <span class="tag-counter">#{resultTag.tagCount}</span>
+										</div>
+									</ui:repeat>
+								</div>
+							</ui:repeat>
+						</div>
+					</div>
+				</ul>
+				</aside>
+				<!-- END TAG-SIDEBAR HIDE -->
+			</div>
+		</p:outputPanel>
+
+		<div class="fixed-action-btn">
+			<a
+				class="btn-floating non-hover-floating-btn waves-effect waves-light"><i
+				class="large material-icons">fullscreen</i> </a>
+		</div>
+
+		<h:form>
+			<p:idleMonitor widgetVar="idle" timeout="1200000">
+				<p:ajax event="active"
+					listener="#{sessionHandler.sessionTimeoutRedirect(request, webHandler.currentFileBOM.id)}" />
+			</p:idleMonitor>
+		</h:form>
+		<h:form id="form_command">
+			<p:remoteCommand name="enter" action="#{webHandler.updateFileName}" />
+			<f:param>
+
+			</f:param>
+			<p:dialog class="dialogEditName" id="dialogEditName"
+				resizable="false" widgetVar="editNameDialog" modal="true"
+				height="70px" width="300px" responsive="true"
+				header="Rename Document">
+				<h:form id="editNameDialog_form">
+					<h:inputText autocomplete="off" maxlength="40" id="input_text"
+						onfocus="this.setSelectionRange(0, this.value.length)"
+						value="#{webHandler.editingFileEntity.name}"
+						onkeypress="if (event.keyCode == 13) { entered(); return false; }"
+						required="true">
+					</h:inputText>
+				</h:form>
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+
+	<ui:define name="inputJsLink">
+		<h:outputScript library="js" name="materialize.min.js" />
+		<h:outputScript library="js"
+			name="jquery.mCustomScrollbar.concat.min.js" />
+		<h:outputScript library="js" name="scripts.js" />
+	</ui:define>
+</ui:composition>
+
+</html>

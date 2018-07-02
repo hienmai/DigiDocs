@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html">
+<body>
+	<ui:composition>
+		<div id="menu-bar">
+			<div id="menu-button">
+				<div class="icon-line-contain">
+					<span class="icon-line" /> <span class="icon-line" /> <span
+						class="icon-line" />
+				</div>
+			</div>
+			<ul>
+				<li><h:link styleClass="name-production" outcome="index">DigiDocs</h:link></li>
+				<li class="has-sub">
+					<ul>
+						<li><h:form>
+								<h:commandLink value="Log out" />
+							</h:form></li>
+					</ul></li>
+			</ul>
+		</div>
+	</ui:composition>
+</body>
+</html>

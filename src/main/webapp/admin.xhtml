@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="inputCssLink">
+		<h:outputStylesheet library="css" name="materialize.min.css" />
+		<h:outputStylesheet library="css" name="admin.css" />
+	</ui:define>
+	<ui:define name="header">
+		<h:link outcome="index" id="product-name">DigiDocs</h:link>
+		<div id="menu-bar"></div>
+	</ui:define>
+	<ui:define name="content">
+		<div id="content">
+			<h1 align="center"
+				style="color: #0096d6; font-size: 25px; margin-top: 70px">Connection
+				Configuration</h1>
+
+			<div id="tableContent" class="row">
+				<center>
+					<h:form>
+						<div class="table1">
+							<table>
+								<tr>
+									<td><div class="label">
+											<span>Salt key:</span>
+										</div></td>
+									<td><p:inputText
+											styleClass="input-file custom-input salt-key-input"
+											id="saltKey" widgetVar="saltKey"
+											autocomplete="off"
+											value="#{configurationHandler.configProperties['database.salt'].value}" /></td>
+								</tr>
+								<tr>
+									<td><div class="label">
+											<span>Source directory:</span>
+										</div></td>
+									<td><p:inputText styleClass="input-file custom-input"
+											value="#{configurationHandler.configProperties['source.directory'].value}" 
+											autocomplete="off" /></td>
+								</tr>
+								<tr>
+									<td><div class="label">
+											<span>Target directory:</span>
+										</div></td>
+									<td><p:inputText styleClass="input-file custom-input"
+											value="#{configurationHandler.configProperties['target.directory'].value}"
+											autocomplete="off" /></td>
+								</tr>
+								<tr id="hidden">
+									<td colspan="2"></td>
+								</tr>
+							</table>
+						</div>
+						<div class="table1">
+							<table>
+								<tr>
+									<td><div class="label">
+											<span>Target domain:</span>
+										</div></td>
+									<td><p:inputText styleClass="input-file custom-input"
+											value="#{configurationHandler.configProperties['target.domain'].value}"
+											autocomplete="off" /></td>
+								</tr>
+								<tr>
+									<td><div class="label">
+											<span>Username:</span>
+										</div></td>
+									<td><p:inputText styleClass="input-file custom-input"
+											value="#{configurationHandler.configProperties['target.auth.username'].value}"
+											autocomplete="off" /></td>
+								</tr>
+								<tr>
+									<td><div class="label">
+											<span>Password:</span>
+										</div></td>
+									<td><p:password styleClass="input-file custom-input"
+											value="#{configurationHandler.configProperties['target.auth.password'].value}"
+											redisplay="true" /></td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<div id="buttons">
+											<p:growl id="notification" showDetail="true" life="4000"/>
+											<p:commandButton styleClass="button" value="Save"
+												update="notification"
+												actionListener="#{configurationHandler.buttonAction}">
+												<f:ajax execute="@this" render="@none" />
+											</p:commandButton>
+											<p:commandButton styleClass="button" id="generateSalt"
+												value="Generate New Salt"
+												action="#{configurationHandler.generateSalt}" />
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</h:form>
+				</center>
+			</div>
+		</div>
+	</ui:define>
+	<ui:define name="inputJsLink">
+		<h:outputScript library="js" name="jquery-3.2.1.min.js" />
+		<h:outputScript library="js" name="materialize.min.js" />
+		<h:outputScript library="js" name="scripts.js" />
+	</ui:define>
+</ui:composition>
+</html>
